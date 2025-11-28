@@ -3,6 +3,7 @@ import { PrimeReactProvider } from "primereact/api"
 
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import QueryProvider from "./components/QueryProvider";
 
 const fontRoboto = Roboto({
   variable: "--font-roboto",
@@ -24,9 +25,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${fontRoboto.className} antialiased`}>
-        <PrimeReactProvider>
-          {children}
-        </PrimeReactProvider>
+        <QueryProvider>
+          <PrimeReactProvider>
+            {children}
+          </PrimeReactProvider>
+        </QueryProvider>
       </body>
     </html>
   );

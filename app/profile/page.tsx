@@ -6,6 +6,7 @@ import Navigation from '../components/Navigation'
 
 
 export default function Profile() {
+  console.log()
   return (
     <div>
       <Header />
