@@ -20,5 +20,9 @@ export interface IRepositories {
   forks: string;
   topics: string[];
   language: string;
+  source: boolean;
+  fork: boolean;
+  archived: boolean;
+  mirror: boolean;
 }
 

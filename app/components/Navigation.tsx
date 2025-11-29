@@ -1,10 +1,10 @@
+import { useState } from 'react'
+
 import Link from 'next/link'
 import { tv } from "tailwind-variants"
 
 import { BookBookmark, MagnifyingGlass, Star } from 'phosphor-react'
-import { MultiSelect } from 'primereact/multiselect'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
 import { Dropdown } from 'primereact/dropdown'
 
 const linkVariant = tv({
@@ -17,41 +17,62 @@ const linkVariant = tv({
   }
 })
 
-const types = [
+const TYPES = [
   { name: 'All', code: 'all' },
   { name: 'Sources', code: 'source' },
   { name: 'Forks', code: 'fork' },
   { name: 'Archived', code: 'archived' },
   { name: 'Mirros', code: 'mirror' }
 ];
-const language = [
+const LANGUAGES = [
   { name: 'All', code: 'all' },
   { name: 'Scss', code: 'scss' },
   { name: 'Java', code: 'java' },
-  { name: 'Typescript', code: 'typescript' },
-  { name: 'Javascript', code: 'javascript' },
+  { name: 'Typescript', code: 'TypeScript' },
+  { name: 'Javascript', code: 'JavaScript' },
   { name: 'HTML', code: 'html' },
   { name: 'CSS', code: 'css' }
 ];
 
 export default function Navigation() {
+  const [input, setIput] = useState<string>("");
   const searchParams = useSearchParams();
-  const queryType = searchParams.get("tab");
+  const queryTab = searchParams.get("tab");
 
-  const [type, setType] = useState<typeof types[0]>();
-  const [language, setLanguage] = useState<typeof language[]>([])
+  const [type, setType] = useState<typeof TYPES[0] | undefined>();
+  const [language, setLanguage] = useState<typeof LANGUAGES[0] | undefined>()
 
   const router = useRouter();
 
+  function reset() {
+    setType(undefined)
+    setLanguage(undefined)
+  }
+
   function handlePushNavigate() {
-    return router.push(`/profile?tab=${queryType}&type=${type?.code}`)
+    const URL = new URLSearchParams();
+    if (type && type.code === "all") {
+      reset();
+      return router.push(`/profile?tab=${queryTab}`)
+    };
+    if (language && language.code === "all") {
+      reset();
+      return router.push(`/profile?tab=${queryTab}`);
+    }
+    if (type && type.code) URL.set("type", type.code)
+    if (language && language.code) URL.set("language", language.code)
+    return router.push(`/profile?tab=${queryTab}&${URL.toString()}`)
+  }
+
+  function handleSearch() {
+    return router.push(`/profile?search=${input}`);
   }
 
   return (
     <nav>
       <ul className='flex gap-7'>
         <li>
-          <Link href="/profile?tab=repositories" className={linkVariant({ active: queryType === "repositories" })}>
+          <Link href="/profile?tab=repositories" className={linkVariant({ active: queryTab === "repositories" })}>
             <BookBookmark size={34} />
             <p className='flex items-center gap-1.5 text-base font-normal w-full'>Repositories
               <span className='text-sm font-normal w-10 pl-3 bg-[#F8F8F8] text-[#989898] border border-zinc-300 rounded-full'>
@@ -61,7 +82,7 @@ export default function Navigation() {
           </Link>
         </li>
         <li>
-          <Link href="/profile?tab=stars" className={linkVariant({ active: queryType === "stars" })}>
+          <Link href="/profile?tab=stars" className={linkVariant({ active: queryTab === "stars" })}>
             <Star size={34} />
             <p className='flex items-center gap-1.5 text-lg font-normal w-full'>Starred
               <span className='text-sm font-normal w-10 pl-3 bg-[#F8F8F8] text-[#989898] border border-zinc-300 rounded-full'>
@@ -73,12 +94,14 @@ export default function Navigation() {
       </ul>
       <div className='grid grid-cols-2 mt-8 gap-3' style={{ alignItems: "start" }}>
         <div className='flex items-center gap-3 text-[#989898] border-b border-b-[#F4F4F4]'>
-          <MagnifyingGlass size={25} weight='bold' />
-          <input type="text" placeholder='Search Here' className='w-full p-3.5 text-zinc-500 outline-none' />
+          <button type="submit" onClick={handleSearch} className='bg-transparent border-none outline-none cursor-pointer'>
+            <MagnifyingGlass size={25} weight='bold' />
+          </button>
+          <input type="text" onChange={(event) => setIput(event.target.value)} placeholder='Search Here' className='w-full p-3.5 text-zinc-500 outline-none' />
         </div>
         <div className='flex gap-5'>
           <Dropdown
-            options={types}
+            options={TYPES}
             optionLabel='name'
             placeholder="Type"
             id='dropdown'
@@ -87,12 +110,15 @@ export default function Navigation() {
             onChange={data => setType(data.value)}
             onHide={handlePushNavigate}
           />
-          <MultiSelect
-            options={language}
+          <Dropdown
+            options={LANGUAGES}
             optionLabel='name'
             placeholder="Language"
             id='dropdown'
             className='rounded-full!'
+            value={language}
+            onChange={event => setLanguage(event.value)}
+            onHide={handlePushNavigate}
           />
         </div>
       </div>

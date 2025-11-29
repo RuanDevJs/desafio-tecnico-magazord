@@ -8,6 +8,7 @@ import { IRepositories } from "../types/accounts";
 
 import LoadingRepository from "./Loading";
 import { useSearchParams } from "next/navigation";
+import { SmileySad } from "phosphor-react";
 
 async function fetchRepositories(user: string, type?: string) {
   const QUERY_PARAMS = `?per_page=10&page=1&sort=created`
@@ -35,21 +36,39 @@ function Repository({ repository, login }: { repository: IRepositories, login: s
   )
 }
 
-type QueryType = "all" | "public" | "private" | "forks" | "sources" | "member"
+function NotFound() {
+  return (
+    <div className="flex flex-col items-center gap-1 mt-5">
+      <SmileySad size={50} color="#111" />
+      <p className="text-zinc-700 font-medium">Não encontramos repositórios com o filtro aplicado!</p>
+    </div>
+  )
+}
+
+type TYPES = "source" | "fork" | "archived" | "mirror"
+type TAB = "repositories" | "stars"
 
 export default function Repositories() {
   const login = useAccount(state => state.state.account?.login);
   const searchParams = useSearchParams();
-  const queryTab = searchParams.get("tab") as "repositories" | "stars";
-  const queryType = searchParams.get("type") as QueryType;
+  const queryTab = searchParams.get("tab") as TAB;
+  const queryType = searchParams.get("type") as TYPES;
+  const queryLanguage = searchParams.get("language") as string;
 
   const { data, isLoading } = useQuery({
     queryFn: async () => {
       const data = queryTab === "repositories" ? await fetchRepositories(login!, queryType) : await fetchStarred(login!);
-      if (queryType !== undefined && queryTab === "repositories") return data.filter((repository) => repository[queryType] === true)
-      return data
+
+      let filteredData: IRepositories[] = [...data];
+
+      searchParams.forEach((value, key) => {
+        if (key && key === "type") filteredData = filteredData.filter(repo => repo[queryType] === true)
+        if (key && key === "language") filteredData = filteredData.filter(repo => repo.language === searchParams.get("language"))
+      })
+
+      return filteredData
     },
-    queryKey: [queryTab, queryType, login],
+    queryKey: [queryTab, queryType, queryLanguage, login],
     enabled: !!login
   });
 
@@ -59,7 +78,7 @@ export default function Repositories() {
   return (
     <section id="repository" className="mt-8">
       <div>
-        {data?.map(repository => <Repository login={login!} repository={repository} key={repository.name} />)}
+        {data && data.length ? data.map(repository => <Repository login={login!} repository={repository} key={repository.name} />) : <NotFound />}
       </div>
     </section>
   )
