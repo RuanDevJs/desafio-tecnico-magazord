@@ -34,3 +34,28 @@
 .p-multiselect-trigger {
   color: #fff;
 }
+
+@keyframes Spinner {
+  from {
+    transform: translate3d(0, -5px, 0);
+  }
+  to {
+    transform: translate3d(0, 0px, 0);
+  }
+}
+
+#spinner {
+  animation: Spinner 0.72s infinite alternate;
+}
+
+.p-dropdown-label .p-inputtext {
+  color: #fff !important;
+}
+
+.p-inputtext {
+  color: #fff !important;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+  color: #fff !important;
+}

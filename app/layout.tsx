@@ -7,7 +7,7 @@ import QueryProvider from "./components/QueryProvider";
 
 const fontRoboto = Roboto({
   variable: "--font-roboto",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   subsets: ["latin"],
 });
 

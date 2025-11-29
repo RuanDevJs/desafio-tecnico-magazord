@@ -13,16 +13,16 @@ async function fetchAccount(username: string) {
 
 export default function AccountProvider({ children }: PropsWithChildren) {
   const setAccount = useAccount((store) => store.actions.setAccount);
-  const { data, isLoading } = useQuery({
+  const account = useQuery({
     queryKey: ["fetch-account"],
     queryFn: async () => await fetchAccount("RuanDevJs"),
   });
 
   useEffect(() => {
-    if (data !== undefined) setAccount(data);
-  }, [data, setAccount]);
+    if (account.data !== undefined) setAccount(account.data);
+  }, [account.data, setAccount]);
 
-  if (isLoading) {
+  if (account.isLoading || !account.isFetched) {
     return <p>loading...</p>
   }
 
