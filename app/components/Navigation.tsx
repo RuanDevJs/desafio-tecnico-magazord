@@ -5,7 +5,11 @@ import { tv } from "tailwind-variants"
 
 import { BookBookmark, MagnifyingGlass, Star } from 'phosphor-react'
 import { useRouter, useSearchParams } from 'next/navigation'
+
 import { Dropdown } from 'primereact/dropdown'
+import useFilters from '../store/useFilters'
+
+import { ILanguage, IType } from '../types/filters'
 
 const linkVariant = tv({
   base: "flex items-center gap-2 transition ease-in-out border-b-2 pb-1.5 border-transparent",
@@ -17,14 +21,15 @@ const linkVariant = tv({
   }
 })
 
-const TYPES = [
+const TYPES: IType[] = [
   { name: 'All', code: 'all' },
   { name: 'Sources', code: 'source' },
   { name: 'Forks', code: 'fork' },
   { name: 'Archived', code: 'archived' },
   { name: 'Mirros', code: 'mirror' }
 ];
-const LANGUAGES = [
+
+const LANGUAGES: ILanguage[] = [
   { name: 'All', code: 'all' },
   { name: 'Scss', code: 'scss' },
   { name: 'Java', code: 'java' },
@@ -39,8 +44,9 @@ export default function Navigation() {
   const searchParams = useSearchParams();
   const queryTab = searchParams.get("tab");
 
-  const [type, setType] = useState<typeof TYPES[0] | undefined>();
-  const [language, setLanguage] = useState<typeof LANGUAGES[0] | undefined>()
+  const { state, actions } = useFilters((state) => state);
+  const { language, type } = state;
+  const { setType, setLanguage } = actions;
 
   const router = useRouter();
 
@@ -51,6 +57,7 @@ export default function Navigation() {
 
   function handlePushNavigate() {
     const URL = new URLSearchParams();
+
     if (type && type.code === "all") {
       reset();
       return router.push(`/profile?tab=${queryTab}`)
@@ -59,13 +66,18 @@ export default function Navigation() {
       reset();
       return router.push(`/profile?tab=${queryTab}`);
     }
+
     if (type && type.code) URL.set("type", type.code)
     if (language && language.code) URL.set("language", language.code)
+
     return router.push(`/profile?tab=${queryTab}&${URL.toString()}`)
   }
 
   function handleSearch() {
-    return router.push(`/profile?search=${input}`);
+    if (input && input.length >= 3) {
+      return router.push(`/profile?tab=${queryTab}&search=${input}`);
+    }
+    return router.push(`/profile?tab=repositories`);
   }
 
   return (

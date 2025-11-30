@@ -8,14 +8,13 @@ import { IRepositories } from "../types/accounts";
 
 import LoadingRepository from "./Loading";
 import { useSearchParams } from "next/navigation";
-import { SmileySad } from "phosphor-react";
 
-async function fetchRepositories(user: string, type?: string) {
-  const QUERY_PARAMS = `?per_page=10&page=1&sort=created`
-  if (type !== undefined) {
-    QUERY_PARAMS.concat(`?type=`)
-  }
-  return await (await API.get<IRepositories[]>(`users/${user}/repos${QUERY_PARAMS}`)).data;
+import { SmileySad } from "phosphor-react";
+import useFilters from "../store/useFilters";
+import { LANGUAGES, TAB, TYPES } from "../types/filters";
+
+async function fetchRepositories(user: string) {
+  return await (await API.get<IRepositories[]>(`users/${user}/repos?per_page=10&page=1&sort=created`)).data;
 }
 
 async function fetchStarred(user: string) {
@@ -45,35 +44,46 @@ function NotFound() {
   )
 }
 
-type TYPES = "source" | "fork" | "archived" | "mirror"
-type TAB = "repositories" | "stars"
-
 export default function Repositories() {
   const login = useAccount(state => state.state.account?.login);
   const searchParams = useSearchParams();
+
   const queryTab = searchParams.get("tab") as TAB;
-  const queryType = searchParams.get("type") as TYPES;
-  const queryLanguage = searchParams.get("language") as string;
+  const { language, type } = useFilters((state) => state.state);
+
+  const querySeach = searchParams.get("search") as string;
 
   const { data, isLoading } = useQuery({
     queryFn: async () => {
-      const data = queryTab === "repositories" ? await fetchRepositories(login!, queryType) : await fetchStarred(login!);
+      const data = queryTab === "repositories" ? await fetchRepositories(login!) : await fetchStarred(login!);
 
       let filteredData: IRepositories[] = [...data];
+      if (type !== undefined) {
+        const code = type.code as TYPES;
+        filteredData = filteredData.filter((repository) => repository[code] === true)
+      }
+      if (language !== undefined) {
+        const code = language.code as LANGUAGES;
+        filteredData = filteredData.filter((repository) => repository.language === code);
+      }
 
-      searchParams.forEach((value, key) => {
-        if (key && key === "type") filteredData = filteredData.filter(repo => repo[queryType] === true)
-        if (key && key === "language") filteredData = filteredData.filter(repo => repo.language === searchParams.get("language"))
-      })
-
-      return filteredData
+      return filteredData;
     },
-    queryKey: [queryTab, queryType, queryLanguage, login],
+    queryKey: [queryTab, login, language, type],
     enabled: !!login
   });
 
-
   if (isLoading) return <LoadingRepository />
+
+  if (querySeach) {
+    const repository = data?.filter(repo => repo.name.toLowerCase().includes(querySeach.toLowerCase()));
+
+    return (
+      <div className="mt-8">
+        {repository && repository.length ? repository.map(repository => <Repository login={login!} repository={repository} key={repository.name} />) : <NotFound />}
+      </div>
+    )
+  }
 
   return (
     <section id="repository" className="mt-8">
