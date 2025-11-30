@@ -2,10 +2,11 @@
 import { PropsWithChildren, useEffect } from "react";
 
 import { useQuery } from "@tanstack/react-query";
-import { IData } from "../types/accounts";
+import { IData } from "@/app/types/accounts";
 
-import API from "../services/api";
-import useAccount from "../store/useAccount"
+import API from "@/app/services/api";
+import useAccount from "@/app/store/useAccount"
+import LoadingProfile from "@/app/components/Loading/LoadingProfile";
 
 async function fetchAccount(username: string) {
   return await (await API.get<IData>(`/users/${username}`)).data;
@@ -22,9 +23,7 @@ export default function AccountProvider({ children }: PropsWithChildren) {
     if (account.data !== undefined) setAccount(account.data);
   }, [account.data, setAccount]);
 
-  if (account.isLoading || !account.isFetched) {
-    return <p>loading...</p>
-  }
+  if (account.isLoading || !account.isFetched) return <LoadingProfile />
 
   return (
     <div>

@@ -7,9 +7,9 @@ import { BookBookmark, MagnifyingGlass, Star } from 'phosphor-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { Dropdown } from 'primereact/dropdown'
-import useFilters from '../store/useFilters'
+import useFilters from '../../store/useFilters'
 
-import { ILanguage, IType } from '../types/filters'
+import { ILanguage, IType } from '../../types/filters'
 
 const linkVariant = tv({
   base: "flex items-center gap-2 transition ease-in-out border-b-2 pb-1.5 border-transparent",

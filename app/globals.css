@@ -35,7 +35,7 @@
   color: #fff;
 }
 
-@keyframes Spinner {
+@keyframes Loading {
   from {
     transform: translate3d(0, -5px, 0);
   }
@@ -44,8 +44,8 @@
   }
 }
 
-#spinner {
-  animation: Spinner 0.72s infinite alternate;
+.loading {
+  animation: Loading 0.72s infinite alternate;
 }
 
 .p-dropdown-label .p-inputtext {

@@ -2,9 +2,8 @@
 
 import Header from '../components/Header'
 import Aside from '../components/Aside'
-import Navigation from '../components/Navigation'
-import { useSearchParams } from 'next/navigation';
-import Repositories from '../components/Repositories';
+import Navigation from '../components/Profile/Navigation'
+import Repositories from '../components/Profile/Repositories';
 
 
 export default function Profile() {

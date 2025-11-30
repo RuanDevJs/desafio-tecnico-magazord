@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import React from 'react'
-import AccountProvider from '../components/AccountProvider'
+import AccountProvider from "@/app/components/Profile/AccountProvider"
 
 const metadata: Metadata = {
   title: "Desafio Técnico Frontend - Magazord",

@@ -1,17 +1,18 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import useAccount from "../store/useAccount";
+import useAccount from "../../store/useAccount";
 
-import API from "../services/api";
-import { IRepositories } from "../types/accounts";
+import API from "../../services/api";
+import { IRepositories } from "../../types/accounts";
 
-import LoadingRepository from "./Loading";
+import LoadingRepository from "../Loading/LoadingRepository";
 import { useSearchParams } from "next/navigation";
 
-import { SmileySad } from "phosphor-react";
-import useFilters from "../store/useFilters";
-import { LANGUAGES, TAB, TYPES } from "../types/filters";
+import useFilters from "../../store/useFilters";
+import { LANGUAGES, TAB, TYPES } from "../../types/filters";
+
+import NotFound from "./NotFound";
 
 async function fetchRepositories(user: string) {
   return await (await API.get<IRepositories[]>(`users/${user}/repos?per_page=10&page=1&sort=created`)).data;
@@ -21,27 +22,9 @@ async function fetchStarred(user: string) {
   return await (await API.get<IRepositories[]>(`users/${user}/starred?per_page=10&page=1&sort=created`)).data;
 }
 
-function Repository({ repository, login }: { repository: IRepositories, login: string }) {
-  return (
-    <div className="mb-7 border-b border-b-zinc-200 pb-3.5">
-      <h3 className="text-xl font-light">{login} /
-        <a href={repository.html_url} className="font-medium text-[#0587FF]">{repository.name}</a>
-      </h3>
-      <p className="text-zinc-500 font-normal py-1.5">{repository.description}</p>
-      <ul className="flex items-center gap-3">
-        <li className="font-medium text-base">{repository.language}</li>
-      </ul>
-    </div>
-  )
-}
-
-function NotFound() {
-  return (
-    <div className="flex flex-col items-center gap-1 mt-5">
-      <SmileySad size={50} color="#111" />
-      <p className="text-zinc-700 font-medium">Não encontramos repositórios com o filtro aplicado!</p>
-    </div>
-  )
+interface IProps {
+  repository: IRepositories;
+  login: string;
 }
 
 export default function Repositories() {
@@ -57,6 +40,10 @@ export default function Repositories() {
     queryFn: async () => {
       const data = queryTab === "repositories" ? await fetchRepositories(login!) : await fetchStarred(login!);
 
+      if (querySeach) {
+        return data?.filter(repo => repo.name.toLowerCase().includes(querySeach.toLowerCase()));
+      }
+
       let filteredData: IRepositories[] = [...data];
       if (type !== undefined) {
         const code = type.code as TYPES;
@@ -69,21 +56,11 @@ export default function Repositories() {
 
       return filteredData;
     },
-    queryKey: [queryTab, login, language, type],
+    queryKey: [queryTab, login, language, querySeach, type],
     enabled: !!login
   });
 
   if (isLoading) return <LoadingRepository />
-
-  if (querySeach) {
-    const repository = data?.filter(repo => repo.name.toLowerCase().includes(querySeach.toLowerCase()));
-
-    return (
-      <div className="mt-8">
-        {repository && repository.length ? repository.map(repository => <Repository login={login!} repository={repository} key={repository.name} />) : <NotFound />}
-      </div>
-    )
-  }
 
   return (
     <section id="repository" className="mt-8">
@@ -91,5 +68,19 @@ export default function Repositories() {
         {data && data.length ? data.map(repository => <Repository login={login!} repository={repository} key={repository.name} />) : <NotFound />}
       </div>
     </section>
+  )
+}
+
+function Repository({ repository, login }: IProps) {
+  return (
+    <div className="mb-7 border-b border-b-zinc-200 pb-3.5">
+      <h3 className="text-xl font-light">{login} /
+        <a href={repository.html_url} className="font-medium text-[#0587FF]">{repository.name}</a>
+      </h3>
+      <p className="text-zinc-500 font-normal py-1.5">{repository.description}</p>
+      <ul className="flex items-center gap-3">
+        <li className="font-medium text-base">{repository.language}</li>
+      </ul>
+    </div>
   )
 }
