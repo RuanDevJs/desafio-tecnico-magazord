@@ -24,5 +24,21 @@ export interface IRepositories {
   fork: boolean;
   archived: boolean;
   mirror: boolean;
+  open_issues: number;
 }
 
+export type TypeCommit = {
+  author: {
+    name: string;
+  }
+  message: string;
+}
+
+export interface ICommits {
+  sha: string;
+  commit: TypeCommit;
+  html_url: string;
+  author: {
+    login: string;
+  }
+}

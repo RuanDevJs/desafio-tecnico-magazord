@@ -10,6 +10,7 @@ import { Dropdown } from 'primereact/dropdown'
 import useFilters from '../../store/useFilters'
 
 import { ILanguage, IType } from '../../types/filters'
+import useAccount from '@/app/store/useAccount'
 
 const linkVariant = tv({
   base: "flex items-center gap-2 transition ease-in-out border-b-2 pb-1.5 border-transparent",
@@ -42,11 +43,13 @@ const LANGUAGES: ILanguage[] = [
 export default function Navigation() {
   const [input, setIput] = useState<string>("");
   const searchParams = useSearchParams();
-  const queryTab = searchParams.get("tab");
+  const queryTab = searchParams.get("tab") ?? "repositories";
 
   const { state, actions } = useFilters((state) => state);
   const { language, type } = state;
   const { setType, setLanguage } = actions;
+
+  const account = useAccount((state) => state.state.account);
 
   const router = useRouter();
 
@@ -60,31 +63,31 @@ export default function Navigation() {
 
     if (type && type.code === "all") {
       reset();
-      return router.push(`/profile?tab=${queryTab}`)
+      return router.push(`/profile/${account?.login}?tab=${queryTab}`)
     };
     if (language && language.code === "all") {
       reset();
-      return router.push(`/profile?tab=${queryTab}`);
+      return router.push(`/profile/${account?.login}?tab=${queryTab}`);
     }
 
     if (type && type.code) URL.set("type", type.code)
     if (language && language.code) URL.set("language", language.code)
 
-    return router.push(`/profile?tab=${queryTab}&${URL.toString()}`)
+    return router.push(`/profile/${account?.login}?tab=${queryTab}&${URL.toString()}`)
   }
 
   function handleSearch() {
     if (input && input.length >= 3) {
-      return router.push(`/profile?tab=${queryTab}&search=${input}`);
+      return router.push(`/profile/${account?.login}?tab=${queryTab}&search=${input}`);
     }
-    return router.push(`/profile?tab=repositories`);
+    return router.push(`/profile/${account?.login}tab=repositories`);
   }
 
   return (
     <nav>
       <ul className='flex gap-7'>
         <li>
-          <Link href="/profile?tab=repositories" className={linkVariant({ active: queryTab === "repositories" })}>
+          <Link href={`/profile/${account?.login}?tab=repositories`} className={linkVariant({ active: queryTab === "repositories" })}>
             <BookBookmark size={34} />
             <p className='flex items-center gap-1.5 text-base font-normal w-full'>Repositories
               <span className='text-sm font-normal w-10 pl-3 bg-[#F8F8F8] text-[#989898] border border-zinc-300 rounded-full'>
@@ -94,7 +97,7 @@ export default function Navigation() {
           </Link>
         </li>
         <li>
-          <Link href="/profile?tab=stars" className={linkVariant({ active: queryTab === "stars" })}>
+          <Link href={`/profile/${account?.login}?tab=stars`} className={linkVariant({ active: queryTab === "stars" })}>
             <Star size={34} />
             <p className='flex items-center gap-1.5 text-lg font-normal w-full'>Starred
               <span className='text-sm font-normal w-10 pl-3 bg-[#F8F8F8] text-[#989898] border border-zinc-300 rounded-full'>

@@ -4,6 +4,7 @@ import { PrimeReactProvider } from "primereact/api"
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./components/QueryProvider";
+import Header from "./components/Header";
 
 const fontRoboto = Roboto({
   variable: "--font-roboto",
@@ -11,10 +12,10 @@ const fontRoboto = Roboto({
   subsets: ["latin"],
 });
 
-const metadata: Metadata = {
-  title: "Desafio Técnico Frontend - Magazord",
+export const metadata: Metadata = {
+  title: "Desafio Ténico Frontend | Magazord",
   description: "Teste técnico para a vaga de Front-end na Magazord, desenvolvido por RuanDevJs.",
-  keywords: ["react", "nextjs", "nodejs", "github", "frontend"]
+  keywords: ["react", "nextjs", "nodejs", "github", "frontend", "github", "github-api"],
 }
 
 export default function RootLayout({
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={`${fontRoboto.className} antialiased`}>
         <QueryProvider>
           <PrimeReactProvider>
+            <Header />
             {children}
           </PrimeReactProvider>
         </QueryProvider>

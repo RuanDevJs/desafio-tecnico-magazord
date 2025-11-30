@@ -12,10 +12,9 @@ interface IAccount {
 const useAccount = create<IAccount>((set) => ({
   state: {
     account: null,
-    repositories: null
   },
   actions: {
-    setAccount: (accountData: IData) => set((state) => ({ state: ({ ...state.state, account: accountData }) }))
+    setAccount: (accountData: IData) => set((state) => ({ state: ({ ...state.state, account: accountData }) })),
   }
 }))
 

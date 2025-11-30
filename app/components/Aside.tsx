@@ -19,25 +19,25 @@ export default function Aside() {
         <div className="mt-3">
           <ul className="flex flex-col gap-3 ml-6">
             <li>
-              <a href="https://www.linkedin.com/in/ruanvitorelpidio" className="text-sm font-normal flex items-center gap-2.5 text-blue-500">
+              <a href="#" className="text-sm font-normal flex items-center gap-2.5 text-blue-500">
                 <Buildings size={23} weight="light" />
                 Magazord - plataforma
               </a>
             </li>
-            <li>
-              <a href="https://www.linkedin.com/in/ruanvitorelpidio" className="text-sm font-normal flex items-center gap-2.5 text-blue-500">
+            {account?.location && (<li>
+              <a href="#" className="text-sm font-normal flex items-center gap-2.5 text-blue-500">
                 <MapPin size={23} weight="light" />
                 {account?.location}
               </a>
-            </li>
-            <li>
+            </li>)}
+            {account?.blog && (<li>
               <a href={account?.blog} className="text-sm font-normal flex items-center gap-2.5 text-blue-500">
                 <Link size={23} weight="light" />
                 {account?.blog}
               </a>
-            </li>
+            </li>)}
             <li>
-              <a href="https://ruandevjs.github.io/portfolio/" className="text-sm font-normal flex items-center gap-2.5 text-blue-500">
+              <a href="#" className="text-sm font-normal flex items-center gap-2.5 text-blue-500">
                 <InstagramLogo size={23} weight="light" />
                 {account?.login}
               </a>

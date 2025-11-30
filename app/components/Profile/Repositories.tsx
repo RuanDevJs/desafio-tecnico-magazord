@@ -13,6 +13,7 @@ import useFilters from "../../store/useFilters";
 import { LANGUAGES, TAB, TYPES } from "../../types/filters";
 
 import NotFound from "./NotFound";
+import Link from "next/link";
 
 async function fetchRepositories(user: string) {
   return await (await API.get<IRepositories[]>(`users/${user}/repos?per_page=10&page=1&sort=created`)).data;
@@ -65,7 +66,7 @@ export default function Repositories() {
   return (
     <section id="repository" className="mt-8">
       <div>
-        {data && data.length ? data.map(repository => <Repository login={login!} repository={repository} key={repository.name} />) : <NotFound />}
+        {data && data.length ? data.map(repository => <Repository login={login!} repository={repository} key={repository.name} />) : <NotFound type='filters' />}
       </div>
     </section>
   )
@@ -75,7 +76,7 @@ function Repository({ repository, login }: IProps) {
   return (
     <div className="mb-7 border-b border-b-zinc-200 pb-3.5">
       <h3 className="text-xl font-light">{login} /
-        <a href={repository.html_url} className="font-medium text-[#0587FF]">{repository.name}</a>
+        <Link href={`/profile/${login}/${repository.name}`} className="font-medium text-[#0587FF]">{repository.name}</Link>
       </h3>
       <p className="text-zinc-500 font-normal py-1.5">{repository.description}</p>
       <ul className="flex items-center gap-3">
