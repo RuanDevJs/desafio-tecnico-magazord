@@ -107,7 +107,7 @@ export default function Navigation() {
           </Link>
         </li>
       </ul>
-      <div className='grid md:grid-grid-cols-1 lg:grid-cols-2 mt-8 gap-3' style={{ alignItems: "start" }}>
+      <div className='grid md:grid-grid-cols-1 lg:grid-cols-2 mt-8 gap-3' id="filters-panel" style={{ alignItems: "start" }}>
         <div className='flex items-center gap-3 text-[#989898] border-b border-b-[#F4F4F4]' id="input-search">
           <button type="submit" onClick={handleSearch} className='bg-transparent border-none outline-none cursor-pointer'>
             <MagnifyingGlass size={25} weight='bold' />
@@ -135,6 +135,32 @@ export default function Navigation() {
             onChange={event => setLanguage(event.value)}
             onHide={handlePushNavigate}
           />
+        </div>
+      </div>
+      <div id="filters-panel-mobile" className='p-2.5 hidden'>
+        <div className='bg-[#f2f2f2] py-2.5 rounded'>
+          <div className='grid grid-cols-2 gap-2'>
+            <Dropdown
+              options={TYPES}
+              optionLabel='name'
+              placeholder="Type"
+              id='dropdown'
+              className='rounded-full!'
+              value={type}
+              onChange={data => setType(data.value)}
+              onHide={handlePushNavigate}
+            />
+            <Dropdown
+              options={LANGUAGES}
+              optionLabel='name'
+              placeholder="Language"
+              id='dropdown'
+              className='rounded-full!'
+              value={language}
+              onChange={event => setLanguage(event.value)}
+              onHide={handlePushNavigate}
+            />
+          </div>
         </div>
       </div>
     </nav>

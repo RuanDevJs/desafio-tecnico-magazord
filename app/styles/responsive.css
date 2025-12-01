@@ -7,19 +7,30 @@
     grid-area: filters;
   }
 
-  #navigation > div {
+  #filters-panel {
     display: grid !important;
     grid-template-areas:
-      "input-search input-search"
-      "filters filters" !important;
+      "filters filters"
+      "input-search input-search" !important;
   }
 }
 
-@media only screen and (max-width: 425px) {
-  #navigation {
-    background-color: green;
-    display: none;
+@media only screen and (max-width: 500px) {
+  #filters-panel {
+    display: none !important;
   }
+
+  #navigation ul {
+    gap: 5px;
+  }
+
+  #navigation ul li {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   #input-search {
     grid-area: input-search;
   }
@@ -33,18 +44,20 @@
     height: 220px;
   }
 
-  #navigation > div {
-    display: grid !important;
-    grid-template-areas:
-      "input-search input-search"
-      "filters filters" !important;
-  }
-
   #repository {
     padding: 12px;
   }
 
   #repository p {
     font-size: 12px;
+  }
+
+  #filters-panel-mobile {
+    margin-top: 15px;
+    display: block !important;
+  }
+
+  #dropdown {
+    height: 50px !important;
   }
 }
