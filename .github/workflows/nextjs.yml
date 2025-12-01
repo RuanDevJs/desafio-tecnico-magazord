@@ -3,6 +3,8 @@
 # To get started with Next.js see: https://nextjs.org/docs/getting-started
 #
 name: Deploy Next.js site to Pages
+env:
+  NEXT_PUBLIC_API: ${{ secrets.NEXT_PUBLIC_API }}
 
 on:
   # Runs on pushes targeting the default branch
