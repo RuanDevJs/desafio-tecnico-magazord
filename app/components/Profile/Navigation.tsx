@@ -84,8 +84,8 @@ export default function Navigation() {
   }
 
   return (
-    <nav>
-      <ul className='flex gap-7'>
+    <nav id="navigation">
+      <ul className='flex gap-7 iphone-size:bg-green-700'>
         <li>
           <Link href={`/profile/${account?.login}?tab=repositories`} className={linkVariant({ active: queryTab === "repositories" })}>
             <BookBookmark size={34} />
@@ -107,14 +107,14 @@ export default function Navigation() {
           </Link>
         </li>
       </ul>
-      <div className='grid grid-cols-2 mt-8 gap-3' style={{ alignItems: "start" }}>
-        <div className='flex items-center gap-3 text-[#989898] border-b border-b-[#F4F4F4]'>
+      <div className='grid md:grid-grid-cols-1 lg:grid-cols-2 mt-8 gap-3' style={{ alignItems: "start" }}>
+        <div className='flex items-center gap-3 text-[#989898] border-b border-b-[#F4F4F4]' id="input-search">
           <button type="submit" onClick={handleSearch} className='bg-transparent border-none outline-none cursor-pointer'>
             <MagnifyingGlass size={25} weight='bold' />
           </button>
           <input type="text" onChange={(event) => setIput(event.target.value)} placeholder='Search Here' className='w-full p-3.5 text-zinc-500 outline-none' />
         </div>
-        <div className='flex gap-5'>
+        <div className='flex gap-5' id="filters">
           <Dropdown
             options={TYPES}
             optionLabel='name'

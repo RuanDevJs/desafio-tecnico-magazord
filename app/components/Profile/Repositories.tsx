@@ -74,13 +74,13 @@ export default function Repositories() {
 
 function Repository({ repository, login }: IProps) {
   return (
-    <div className="mb-7 border-b border-b-zinc-200 pb-3.5">
-      <h3 className="text-xl font-light">{login} /
+    <div className="mb-7 border-b border-b-zinc-200 pb-3.5 md:px-2.5">
+      <h3 className="md:text-lg lg:text-xl font-light">{login} /
         <Link href={`/profile/${login}/${repository.name}`} className="font-medium text-[#0587FF]">{repository.name}</Link>
       </h3>
-      <p className="text-zinc-500 font-normal py-1.5">{repository.description}</p>
+      <p className="md:text-sm lg:text-base text-zinc-500 font-normal py-1.5">{repository.description}</p>
       <ul className="flex items-center gap-3">
-        <li className="font-medium text-base">{repository.language}</li>
+        <li className="font-medium md:text-sm lg:text-base">{repository.language}</li>
       </ul>
     </div>
   )

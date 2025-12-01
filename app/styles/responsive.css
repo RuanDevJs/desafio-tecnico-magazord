@@ -1,0 +1,50 @@
+@media only screen and (max-width: 768px) {
+  #input-search {
+    grid-area: input-search;
+  }
+
+  #filters {
+    grid-area: filters;
+  }
+
+  #navigation > div {
+    display: grid !important;
+    grid-template-areas:
+      "input-search input-search"
+      "filters filters" !important;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  #navigation {
+    background-color: green;
+    display: none;
+  }
+  #input-search {
+    grid-area: input-search;
+  }
+
+  #filters {
+    grid-area: filters;
+  }
+
+  #profile-picture img {
+    width: 220px;
+    height: 220px;
+  }
+
+  #navigation > div {
+    display: grid !important;
+    grid-template-areas:
+      "input-search input-search"
+      "filters filters" !important;
+  }
+
+  #repository {
+    padding: 12px;
+  }
+
+  #repository p {
+    font-size: 12px;
+  }
+}

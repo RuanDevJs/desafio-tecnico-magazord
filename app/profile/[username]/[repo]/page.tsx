@@ -27,7 +27,7 @@ export default function Repo() {
   });
 
   return (
-    <main className='p-7 bg-[#f2f2f2] h-dvh'>
+    <main className='p-7'>
       <div className='w-[520px] m-auto'>
         <div className='space-y-1.5'>
           <div className='flex items-center gap-3.5'>

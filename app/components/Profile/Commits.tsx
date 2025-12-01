@@ -18,7 +18,7 @@ interface IProps {
 
 function Commit({ data }: { data: ICommits }) {
   return (
-    <div className='bg-white py-3.5 px-4 rounded'>
+    <div className='bg-[#f2f2f2] py-3.5 px-4 rounded'>
       <div className='flex items-center justify-between'>
         <div>
           <h3 className='text-xl font-medium text-zinc-900 pb-1.5'>{data.commit.message}</h3>

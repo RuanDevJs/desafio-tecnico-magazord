@@ -6,8 +6,8 @@ import Repositories from '../../components/Profile/Repositories';
 
 export default function Profile() {
   return (
-    <main className='w-4/5 m-auto'>
-      <div className='grid lg:grid-cols-[380px_1fr] gap-8 mt-10 sm:grid-cols-1'>
+    <main className='sm:w-[60%] lg:bg-yellow-400 md:w-[80%] lg:w-4/5  m-auto'>
+      <div className='grid md:grid-cols-[220px_1fr] 2xl:grid-cols-[300px_1fr] gap-8 mt-10 sm:grid-cols-1'>
         <Aside />
         <div>
           <Navigation />
