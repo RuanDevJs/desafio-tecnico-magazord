@@ -32,6 +32,16 @@
   </li>
 </ul>
 
+<h3>Pontos de Melhoria</h3>
+<ul>
+  <li>
+    Gostaria de ter implementado um sistema de testes, principalmente para garantir o correto funcionamento dos states do Zustand na página de Profile.
+  </li>
+  <li>
+    Gostaria de ter adicionado uma feature para exportar os dados do usuário (nome, LinkedIn, GitHub e quantidade de repositórios públicos) para CSV.
+  </li>
+</ul>
+
 <h3>Rodando localmente</h3>
 
 <p>Clone o projeto</p>

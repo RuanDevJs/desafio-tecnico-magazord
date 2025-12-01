@@ -68,4 +68,8 @@
   #profile-information-web {
     display: none;
   }
+
+  #profile-information-mobile {
+    display: block !important;
+  }
 }

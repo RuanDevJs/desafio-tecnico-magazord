@@ -45,7 +45,7 @@ export default function Aside() {
               </a>
             </li>
           </ul>
-          <div className="my-3.5">
+          <div className="my-3.5 hidden" id="profile-information-mobile">
             <p className="text-base text-[#0587FF] font-normal text-center mb-3.5" onClick={() => setShowAccount(oldValue => !oldValue)}>Informações Adicionais</p>
             {showAccount ? <ul className="flex md:ml-5 flex-col gap-3 bg-[#f2f2f2] w-[320px] m-auto p-3.5 rounded-lg">
               <li>
