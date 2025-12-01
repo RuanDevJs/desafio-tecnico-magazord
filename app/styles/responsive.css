@@ -60,4 +60,12 @@
   #dropdown {
     height: 50px !important;
   }
+
+  #profile > div {
+    gap: 12px;
+  }
+
+  #profile-information-web {
+    display: none;
+  }
 }
